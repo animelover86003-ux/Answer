@@ -37,7 +37,6 @@ void generateSinglyEven(int n, int sq[][50]) {
     int temp[50][50] = {0};
     generateOdd(half, temp);
 
-    // Copy smaller odd square into four quadrants
     for (int i = 0; i < half; i++)
         for (int j = 0; j < half; j++) {
             sq[i][j] = temp[i][j];
@@ -48,7 +47,6 @@ void generateSinglyEven(int n, int sq[][50]) {
 
     int cols = (n - 2) / 4;
 
-    // Swap columns
     for (int i = 0; i < n; i++)
         for (int j = 0; j < cols; j++)
             if (i < half) {
@@ -57,7 +55,6 @@ void generateSinglyEven(int n, int sq[][50]) {
                 sq[i + half][j] = tempv;
             }
 
-    // Middle column swap
     for (int i = 0; i < half; i++) {
         int j = cols;
         int tempv = sq[i][j];
@@ -72,7 +69,6 @@ bool checkMagic(int n, int sq[][50]) {
     for (int j = 0; j < n; j++)
         target += sq[0][j];
 
-    // Check rows
     for (int i = 1; i < n; i++) {
         int sum = 0;
         for (int j = 0; j < n; j++)
@@ -81,7 +77,6 @@ bool checkMagic(int n, int sq[][50]) {
         if (sum != target) return false;
     }
 
-    // Check columns
     for (int j = 0; j < n; j++) {
         int sum = 0;
         for (int i = 0; i < n; i++)
@@ -90,14 +85,12 @@ bool checkMagic(int n, int sq[][50]) {
         if (sum != target) return false;
     }
 
-    // Diagonal 1
     int d1 = 0;
     for (int i = 0; i < n; i++)
         d1 += sq[i][i];
 
     if (d1 != target) return false;
 
-    // Diagonal 2
     int d2 = 0;
     for (int i = 0; i < n; i++)
         d2 += sq[i][n - i - 1];
