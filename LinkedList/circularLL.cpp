@@ -5,7 +5,7 @@ using namespace std;
 
 struct Node {
     int seatNo;
-    int status; // 0 = available, 1 = booked
+    int status; 
     Node* next;
     Node* prev;
 };
@@ -124,7 +124,7 @@ void cancelBooking() {
             } while (temp != start);
 
             if (temp->status == 0)
-                cout << "Already available!\n";
+                cout << "Not Booked Anyway!\n";
             else {
                 temp->status = 0;
                 cout << "Booking cancelled.\n";
