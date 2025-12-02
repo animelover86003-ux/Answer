@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
+
 struct Student
 {
     string name;
@@ -8,13 +9,9 @@ struct Student
     string division;
     string year;
 };
-int main()
-{
-    int n;
-    cout << "Enter total number of students: ";
-    cin >> n;
-    Student s[n];
 
+void inputStudents(Student s[], int n)
+{
     for (int i = 0; i < n; i++)
     {
         cout << "\nEnter details of student " << i + 1 << endl;
@@ -27,28 +24,44 @@ int main()
         cout << "Year (S.Y./T.Y./B.Tech.): ";
         cin >> s[i].year;
     }
+}
 
-    string searchName = "XYZ";
-    int searchRoll = 17;
-    string searchDiv = "X";
-    bool found = false;
+bool searchStudent(Student s[], int n, string searchName, int searchRoll, string searchDiv, string searchYear)
+{
     for (int i = 0; i < n; i++)
     {
-        if (s[i].name == searchName && s[i].roll_no == searchRoll && s[i].division == searchDiv && s[i].year == "S.Y.")
+        if (s[i].name == searchName && s[i].roll_no == searchRoll && s[i].division == searchDiv && s[i].year == searchYear)
         {
             cout << "\nStudent Found!\n";
             cout << "Name: " << s[i].name << ", Roll No: " << s[i].roll_no
                  << ", Division: " << s[i].division << ", Year: " << s[i].year << endl;
-            found = true;
-            break;
+            return true;
         }
     }
-
-    if (!found)
-        cout << "\nStudent Not Found!\n";
-    return 0;
-
+    return false;
 }
+
+int main()
+{
+    int n;
+    cout << "Enter total number of students: ";
+    cin >> n;
+
+    Student s[n];
+
+    inputStudents(s, n);
+
+    string searchName = "XYZ";
+    int searchRoll = 17;
+    string searchDiv = "X";
+    string searchYear = "S.Y.";
+
+    if (!searchStudent(s, n, searchName, searchRoll, searchDiv, searchYear))
+        cout << "\nStudent Not Found!\n";
+
+    return 0;
+}
+
 
 
 // #include <iostream>

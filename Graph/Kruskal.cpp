@@ -1,74 +1,77 @@
 #include <iostream>
 using namespace std;
 
+#define MAX 20
+
 struct Edge {
-    int u, v, w;
+    int u, v, w; 
 };
 
-int parent[50];
+int parent[MAX];
 
-// Find parent (with path compression)
-int find(int x) {
-    while (parent[x] != x)
-        x = parent[x];
-    return x;
+void makeSet(int n) {
+    for (int i = 0; i < n; i++)
+        parent[i] = i;
 }
 
-// Union of two sets
-void union_set(int x, int y) {
-    parent[y] = x;
+int find(int x) {
+    if (parent[x] == x)
+        return x;
+    return parent[x] = find(parent[x]); 
+}
+
+void unionSet(int x, int y) {
+    int px = find(x);
+    int py = find(y);
+    if (px != py)
+        parent[py] = px; 
+}
+
+void sortEdges(Edge edges[], int m) {
+    for (int i = 0; i < m - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < m; j++) {
+            if (edges[j].w < edges[minIdx].w)
+                minIdx = j;
+        }
+        Edge temp = edges[i];
+        edges[i] = edges[minIdx];
+        edges[minIdx] = temp;
+    }
 }
 
 int main() {
-    int v, e;
-    Edge edges[100], result[100];
-
+    int n, m;
     cout << "Enter number of vertices: ";
-    cin >> v;
-
+    cin >> n;
     cout << "Enter number of edges: ";
-    cin >> e;
+    cin >> m;
 
-    cout << "\nEnter edges in format (u v w):\n";
-    for (int i = 0; i < e; i++)
+    Edge edges[MAX];
+
+    cout << "Enter edges (u v w):\n";
+    for (int i = 0; i < m; i++)
         cin >> edges[i].u >> edges[i].v >> edges[i].w;
 
-    // Initialize parent
-    for (int i = 1; i <= v; i++)
-        parent[i] = i;
+    sortEdges(edges, m);
 
-    // Sort edges by weight (simple bubble sort)
-    for (int i = 0; i < e - 1; i++) {
-        for (int j = 0; j < e - i - 1; j++) {
-            if (edges[j].w > edges[j + 1].w) {
-                Edge temp = edges[j];
-                edges[j] = edges[j + 1];
-                edges[j + 1] = temp;
-            }
+    makeSet(n);
+
+    int mstWeight = 0;
+    cout << "Edges in MST:\n";
+
+    for (int i = 0; i < m; i++) {
+        int uRep = find(edges[i].u);
+        int vRep = find(edges[i].v);
+
+        if (uRep != vRep) {
+            cout << edges[i].u << " - " << edges[i].v << " = " << edges[i].w << endl;
+            mstWeight += edges[i].w;
+            unionSet(uRep, vRep);
         }
     }
 
-    int totalCost = 0, count = 0;
-
-    // Kruskal's Algorithm
-    for (int i = 0; i < e; i++) {
-        int pu = find(edges[i].u);
-        int pv = find(edges[i].v);
-
-        if (pu != pv) {
-            result[count++] = edges[i];
-            totalCost += edges[i].w;
-            union_set(pu, pv);
-        }
-    }
-
-    cout << "\nMinimum Spanning Tree:\n";
-    for (int i = 0; i < count; i++) {
-        cout << result[i].u << " -- " << result[i].v 
-             << "  (Weight = " << result[i].w << ")\n";
-    }
-
-    cout << "\nTotal Minimum Cost = " << totalCost << "\n";
+    cout << "Total weight of MST: " << mstWeight << endl;
 
     return 0;
 }

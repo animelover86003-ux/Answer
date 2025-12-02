@@ -3,6 +3,19 @@ using namespace std;
 
 #define MAX 20
 
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node* adjList[MAX];
+
+bool visited[MAX];
+
+int n;
+
+
 class Queue {
     int arr[MAX];
     int front, rear;
@@ -36,9 +49,6 @@ public:
     }
 };
 
-int adj[MAX][MAX];
-bool visited[MAX];
-int n;
 
 void BFS(int start) {
     Queue q;
@@ -51,46 +61,60 @@ void BFS(int start) {
         int v = q.pop();
         cout << v << " ";
 
-        for (int i = 0; i < n; i++) {
-            if (adj[v][i] == 1 && !visited[i]) {
-                visited[i] = true;
-                q.push(i);
+        Node* temp = adjList[v];
+
+        while (temp != nullptr) {
+            int neigh = temp->data;
+
+            if (!visited[neigh]) {
+                visited[neigh] = true;
+                q.push(neigh);
             }
+
+            temp = temp->next;
         }
     }
+
     cout << endl;
 }
 
-void DFS(int v) {
-    cout << v << " ";
-    visited[v] = true;
-
-    for (int i = 0; i < n; i++) {
-        if (adj[v][i] == 1 && !visited[i])
-            DFS(i);
-    }
-}
 
 int main() {
     cout << "Enter number of vertices: ";
     cin >> n;
 
-    cout << "Enter adjacency matrix (0/1):\n";
     for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            cin >> adj[i][j];
+        adjList[i] = nullptr;
+
+    int edges;
+    cout << "Enter number of edges: ";
+    cin >> edges;
+
+    cout << "Enter edges (u v) meaning u is connected to v:\n";
+
+    for (int i = 0; i < edges; i++) {
+        int u, v;
+        cin >> u >> v;
+
+        Node* newNode = new Node;
+        newNode->data = v;
+        newNode->next = adjList[u];
+        adjList[u] = newNode;
+
+        Node* newNode2 = new Node;
+        newNode2->data = u;
+        newNode2->next = adjList[v];
+        adjList[v] = newNode2;
+    }
 
     int start;
-    cout << "Enter starting vertex (0 to " << n - 1 << "): ";
+    cout << "Enter starting vertex: ";
     cin >> start;
 
-    for (int i = 0; i < n; i++) visited[i] = false;
-    BFS(start);
+    for (int i = 0; i < n; i++)
+        visited[i] = false;
 
-    for (int i = 0; i < n; i++) visited[i] = false;
-    cout << "DFS Traversal: ";
-    DFS(start);
-    cout << endl;
+    BFS(start);
 
     return 0;
 }
