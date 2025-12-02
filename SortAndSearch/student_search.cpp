@@ -14,6 +14,7 @@ int main()
     cout << "Enter total number of students: ";
     cin >> n;
     Student s[n];
+
     for (int i = 0; i < n; i++)
     {
         cout << "\nEnter details of student " << i + 1 << endl;
@@ -26,6 +27,7 @@ int main()
         cout << "Year (S.Y./T.Y./B.Tech.): ";
         cin >> s[i].year;
     }
+
     string searchName = "XYZ";
     int searchRoll = 17;
     string searchDiv = "X";
@@ -41,7 +43,59 @@ int main()
             break;
         }
     }
+
     if (!found)
         cout << "\nStudent Not Found!\n";
     return 0;
+
 }
+
+
+// #include <iostream>
+// #include <string>
+// using namespace std;
+
+// struct Student {
+//     int rollNo;
+//     string name;
+// };
+
+// int binarySearch(Student arr[], int n, int key) {
+//     int low = 0, high = n - 1;
+//     while (low <= high) {
+//         int mid = low + (high - low) / 2;
+//         if (arr[mid].rollNo == key)
+//             return mid;
+//         else if (arr[mid].rollNo < key)
+//             low = mid + 1;
+//         else
+//             high = mid - 1;
+//     }
+//     return -1;
+// }
+
+// int main() {
+//     // Assume S.Y. Division X students (sorted by rollNo)
+//     Student students[] = {
+//         {10, "ABC"},
+//         {12, "DEF"},
+//         {15, "PQR"},
+//         {17, "XYZ"},
+//         {20, "LMN"}
+//     };
+
+//     int n = sizeof(students) / sizeof(students[0]);
+//     int key = 17;
+
+//     int index = binarySearch(students, n, key);
+
+//     if (index != -1) {
+//         cout << "Student Found!\n";
+//         cout << "Roll No: " << students[index].rollNo << "\n";
+//         cout << "Name: " << students[index].name << "\n";
+//     } else {
+//         cout << "Student with roll no " << key << " not found.\n";
+//     }
+
+//     return 0;
+// }
